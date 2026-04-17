@@ -1,0 +1,185 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bills</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+body {
+    background: #f4f7fb;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.container {
+    margin-top: 30px;
+}
+
+.card-box {
+    background: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    margin-bottom: 20px;
+}
+
+.stat {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.paid {
+    color: green;
+    font-weight: bold;
+}
+
+.pending {
+    color: red;
+    font-weight: bold;
+}
+
+.late {
+    color: darkred;
+    font-weight: bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2 class="mb-4">💰 Bills Management</h2>
+   <!-- SUMMARY -->
+    <div class="row text-center">
+
+        <div class="col-md-4">
+            <div class="card-box">
+                <p>Total Bills</p>
+                <div class="stat">{{ total_bills }}</div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card-box">
+                <p>Total Collection</p>
+                <div class="stat text-success">₹{{ total_collection }}</div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card-box">
+                <p>Pending Amount</p>
+                <div class="stat text-danger">₹{{ pending_amount }}</div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- FILTER -->
+    <div class="card-box">
+        <form method="GET" class="row g-3">
+            <div class="col-md-4">
+                <input type="text" name="month" class="form-control" placeholder="Enter month (e.g. March)">
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-primary w-100">Filter</button>
+            </div>
+            <div class="col-md-2">
+                <a href="/bills" class="btn btn-secondary w-100">Reset</a>
+            </div>
+        </form>
+    </div>
+
+    <table class="table table-bordered text-center align-middle">
+
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Member</th>
+                <th>Month</th>
+                <th>Maintenance</th>
+                <th>Penalty</th>
+                <th>Charges</th>
+                <th>Total</th>
+                <th>Due Date</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        {% for bill in bills %}
+            <tr>
+
+                <td>{{ bill[0] }}</td>
+                <td>{{ bill[1] }}</td>
+                <td>{{ bill[2] }}</td>
+
+                <td>₹{{ bill[3] }}</td>
+                <td>₹{{ bill[4] }}</td>
+
+                <!-- Charges -->
+                <td>₹{{ bill[8] }}</td>
+
+                <!-- Total -->
+                <td><strong>₹{{ bill[5] + bill[8] }}</strong></td>
+
+                <!-- Due Date -->
+                <td>
+                    {% if bill[7] %}
+                        {{ bill[7] }}
+                    {% else %}
+                        <span class="text-muted">Not Set</span>
+                    {% endif %}
+                </td>
+
+                <!-- Status -->
+                <td>
+                    {% if bill[6] == 'Paid' %}
+                        <span class="paid">Paid</span>
+                    {% else %}
+                        {% if bill[4] > 0 %}
+                            <span class="late">Late + Penalty</span>
+                        {% else %}
+                            <span class="pending">Pending</span>
+                        {% endif %}
+                    {% endif %}
+                </td>
+
+                <!-- Actions -->
+                <td>
+
+                    {% if bill[6] == 'Pending' %}
+                        <a href="/mark_paid/{{ bill[0] }}" class="btn btn-success btn-sm">
+                            ✔ Paid
+                        </a>
+                    {% else %}
+                        <button class="btn btn-secondary btn-sm" disabled>
+                            ✔ Paid
+                        </button>
+                    {% endif %}
+
+                    <a href="/edit_bill/{{ bill[0] }}" class="btn btn-warning btn-sm">
+                        ✏ Edit
+                    </a>
+
+                    <a href="/delete_bill/{{ bill[0] }}"
+                       class="btn btn-danger btn-sm"
+                       onclick="return confirm('Delete this bill?')">
+                        ❌ Delete
+                    </a>
+
+                </td>
+
+            </tr>
+        {% endfor %}
+        </tbody>
+
+    </table>
+</div>
+
+</body>
+</html>

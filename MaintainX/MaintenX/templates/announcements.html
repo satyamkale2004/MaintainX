@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Announcements</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+
+<body>
+
+<nav class="navbar navbar-dark bg-dark">
+    <div class="container-fluid">
+        <span class="navbar-brand">MaintenX Secretary</span>
+        <div>
+            <a href="/secretary_dashboard" class="btn btn-light">Dashboard</a>
+            <a href="/logout" class="btn btn-danger">Logout</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-4">
+
+    <div class="dashboard-title mb-3">📢 Announcements</div>
+
+    <!-- ADD ANNOUNCEMENT -->
+    <div class="card mb-4">
+        <div class="card-header">Post Announcement</div>
+        <div class="card-body">
+
+            <form method="POST">
+                <input name="title" class="form-control mb-2" placeholder="Title" required>
+                <textarea name="message" class="form-control mb-2" placeholder="Message" required></textarea>
+                <button class="btn btn-primary">Post</button>
+            </form>
+
+        </div>
+    </div>
+
+    <!-- ANNOUNCEMENT LIST -->
+{% for a in announcements %}
+<div class="card mb-3 shadow-sm">
+    <div class="card-body">
+
+        <!-- TITLE -->
+        <h5 class="fw-bold text-primary">
+            📢 {{ a[1] }}
+        </h5>
+
+        <!-- MESSAGE -->
+        <p class="mb-2">
+            {{ a[2] }}
+        </p>
+
+        <!-- DATE + TIME -->
+        <small class="text-muted">
+            📅 {{ a[3] }}
+            {% if a[4] %}
+                | ⏰ {{ a[4] }}
+            {% endif %}
+        </small>
+
+        <!-- DELETE BUTTON -->
+        <div class="mt-2 text-end">
+            <a href="/delete_announcement/{{ a[0] }}"
+               class="btn btn-danger btn-sm"
+               onclick="return confirm('Delete this announcement?')">
+               Delete
+            </a>
+        </div>
+
+    </div>
+</div>
+{% endfor %}

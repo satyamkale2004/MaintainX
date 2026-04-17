@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Bills</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background: #f4f7fb;
+        }
+        .container {
+            margin-top: 40px;
+        }
+        .card {
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+        .paid {
+            color: green;
+            font-weight: bold;
+        }
+        .pending {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <h2 class="text-center mb-4">💳 My Bills</h2>
+
+    <!-- ✅ SUCCESS MESSAGE -->
+    {% if request.args.get('msg') %}
+    <div class="alert alert-success text-center">
+        {{ request.args.get('msg') }}
+    </div>
+    {% endif %}
+
+    <div class="card p-4">
+
+        <table class="table table-bordered table-hover text-center align-middle">
+            <thead class="table-dark">
+    <tr>
+        <th>ID</th>
+        <th>Month</th>
+        <th>Maintenance</th>
+        <th>Penalty</th>
+        <th>Charges</th> <!-- NEW -->
+        <th>Total</th>
+        <th>Status</th>
+        <th>Pay</th>
+        <th>Download</th>
+    </tr>
+</thead>
+
+<tbody>
+{% for bill in bills %}
+<tr>
+
+    <td>{{ bill[0] }}</td>
+    <td>{{ bill[1] }}</td>
+
+    <td>₹{{ bill[2] }}</td>
+    <td>₹{{ bill[3] }}</td>
+
+    <!-- ✅ Charges -->
+    <td>₹{{ bill[6] }}</td>
+
+    <!-- ✅ Updated Total -->
+    <td><strong>₹{{ bill[4] + bill[6] }}</strong></td>
+
+    <!-- Status -->
+    <td>
+        {% if bill[5] == 'Paid' %}
+            <span class="text-success">✔ Paid</span>
+        {% else %}
+            <span class="text-danger">✖ Pending</span>
+        {% endif %}
+    </td>
+
+    <!-- Pay -->
+    <td>
+        {% if bill[5] == 'Pending' %}
+            <a href="/pay/{{ bill[0] }}" class="btn btn-success btn-sm">
+                💳 Pay Now
+            </a>
+        {% else %}
+            <button class="btn btn-secondary btn-sm" disabled>
+                Paid
+            </button>
+        {% endif %}
+    </td>
+
+    <!-- PDF -->
+    <td>
+        <a href="/download_bill/{{ bill[0] }}" class="btn btn-primary btn-sm">
+            📄 PDF
+        </a>
+    </td>
+
+</tr>
+{% endfor %}
+</tbody>
+
+        </table>
+
+    </div>
+
+    <!-- Back -->
+    <div class="text-center mt-4">
+        <a href="/member_dashboard" class="btn btn-dark">⬅ Back to Dashboard</a>
+    </div>
+
+</div>
+
+</body>
+</html>

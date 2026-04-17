@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MaintenX | Pay Bill</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/static/css/style.css">
+
+    <!-- JS -->
+    <script src="/static/js/script.js"></script>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand">MaintenX Payment</a>
+
+        <div class="ms-auto">
+            <a href="/member_dashboard" class="btn btn-light me-2">Dashboard</a>
+            <a href="/logout" class="btn btn-danger">Logout</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-4">
+
+    <!-- TITLE -->
+    <div class="dashboard-title">Pay Maintenance Bill</div>
+
+    <!-- BILL DETAILS -->
+    <div class="card mb-4">
+        <div class="card-header">
+            Bill Summary
+        </div>
+
+        <div class="card-body">
+
+            <p><strong>Month:</strong> {{ bill[2] }}</p>
+            <p><strong>Maintenance:</strong> ₹{{ bill[3] }}</p>
+            <p><strong>Penalty:</strong> ₹{{ bill[4] }}</p>
+            <p><strong>Total Amount:</strong> ₹{{ bill[5] }}</p>
+
+        </div>
+    </div>
+
+    <!-- PAYMENT OPTIONS -->
+    <div class="card mb-4">
+        <div class="card-header">
+            Payment Options
+        </div>
+
+        <div class="card-body text-center">
+
+            <p><strong>Scan QR Code</strong></p>
+            <img src="/static/images/qr.png" width="200" alt="QR Code">
+
+            <hr>
+
+            <p><strong>OR Pay Online</strong></p>
+
+            <button class="btn btn-success" onclick="showAlert('Redirecting to payment gateway...')">
+                Pay via Razorpay
+            </button>
+
+        </div>
+    </div>
+
+    <!-- CONFIRM BUTTON -->
+    <div class="text-center">
+        <a href="/confirm_payment/{{ bill[0] }}" class="btn btn-primary">
+            Confirm Payment
+        </a>
+    </div>
+
+</div>
+
+</body>
+</html>

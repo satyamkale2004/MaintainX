@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MaintenX | Add Society</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/static/css/style.css">
+
+    <!-- JS -->
+    <script src="/static/js/script.js"></script>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand">MaintenX Admin</a>
+        <div class="ms-auto">
+            <a href="/admin_dashboard" class="btn btn-light me-2">Dashboard</a>
+            <a href="/logout" class="btn btn-danger">Logout</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-5">
+
+    <div class="card">
+        <div class="card-header">
+            Add New Society
+        </div>
+
+        <div class="card-body">
+
+            <form method="POST" action="/add_society" onsubmit="return validateForm()">
+
+                <!-- Society Name -->
+                <div class="mb-3">
+                    <label>Society Name</label>
+                    <input type="text" name="name" class="form-control" placeholder="Enter society name" required>
+                </div>
+
+                <!-- Address -->
+                <div class="mb-3">
+                    <label>Address</label>
+                    <textarea name="address" class="form-control" rows="3" placeholder="Enter society address" required></textarea>
+                </div>
+
+                <!-- Buttons -->
+                <div class="d-flex justify-content-between">
+                    <a href="/admin_dashboard" class="btn btn-secondary">Cancel</a>
+                    <button type="submit" class="btn btn-primary">Add Society</button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
